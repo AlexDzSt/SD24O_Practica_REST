@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends
 import orm.repo as repo
+import orm.esquemas as esquemas
 from sqlalchemy.orm import Session
 from orm.config import generador_sesion
 
@@ -66,3 +67,30 @@ def borra_alumno_por_id(id:int, sesion:Session=Depends(generador_sesion)):
     repo.borra_foto_por_idAlumno(sesion, id)
     repo.borra_alumno_por_id(sesion, id)
     return{"Alumno_borrado":"OK"}
+
+@app.post("/alumnos")
+def guarda_alumno(alumno:esquemas.AlumnoBase, sesion:Session=Depends(generador_sesion)):
+    print(alumno)
+    return repo.guardar_alumno(sesion, alumno)
+
+@app.put("/alumnos/{id}")
+def actualiza_alumno(id:int, info_alumno:esquemas.AlumnoBase, sesion:Session=Depends(generador_sesion)):
+    return repo.actualiza_alumno_por_id(sesion, id, info_alumno)
+
+@app.post("/alumnos/{id}/calificaciones")
+def guarda_calificacion_alumno(id:int, calificacion:esquemas.CalificacionBase, sesion:Session=Depends(generador_sesion)):
+    print(calificacion)
+    return repo.guarda_calificacion_alumno(sesion, id, calificacion)
+
+@app.put("/calificaciones/{id}")
+def actualiza_calificacion(id:int, info_calificacion:esquemas.CalificacionBase, sesion:Session=Depends(generador_sesion)):
+    return repo.actualiza_calificacion_por_id(sesion, id, info_calificacion)
+
+@app.post("/alumnos/{id}/fotos")
+def guarda_foto_alumno(id:int, foto:esquemas.FotoBase, sesion:Session=Depends(generador_sesion)):
+    print(foto)
+    return repo.guarda_foto_alumno(sesion, id, foto)
+
+@app.put("/fotos/{id}")
+def actualiza_foto(id:int, info_foto:esquemas.FotoBase, sesion:Session=Depends(generador_sesion)):
+    return repo.actualiza_foto_por_id(sesion, id, info_foto)
