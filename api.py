@@ -5,61 +5,64 @@ from orm.config import generador_sesion
 
 app = FastAPI()
 
-### Alumnos ###
 @app.get("/alumnos")
-def lista_alumnos(sesion: Session = Depends(generador_sesion)):
-    print("Api consultando lista de alumnos")
+def lista_alumnos(sesion:Session=Depends(generador_sesion)):
+    print("Api consultando todos los alumno")
     return repo.alumno(sesion)
-
+    
 @app.get("/alumnos/{id}")
-def alumno_por_id(id: int, sesion: Session = Depends(generador_sesion)):
+def alumno_por_id(id:int,sesion:Session=Depends(generador_sesion)):
     print("Api consultando alumno por id")
     return repo.alumno_por_id(sesion, id)
 
 @app.get("/alumnos/{id}/calificaciones")
-def calificacion_por_idAlumno(id: int, sesion: Session = Depends(generador_sesion)):
-    print("Api consultando calificacion por id de Alumno")
+def calificacion_por_id_alumno(id:int, sesion:Session=Depends(generador_sesion)):
+    print("Api consultando calificacion por id alumno")
     return repo.calificacion_por_idAlumno(sesion, id)
 
 @app.get("/alumnos/{id}/fotos")
-def foto_por_idAlumno(id: int, sesion: Session = Depends(generador_sesion)):
-    print("Api consultando fotos por id de Alumno")
+def foto_por_id_alumno(id:int, sesion:Session=Depends(generador_sesion)):
+    print("Api consultando foto por id alumno")
     return repo.foto_por_idAlumno(sesion, id)
 
-@app.delete("/alumnos/{id}")
-def eliminar_alumno_por_id(id: int, sesion: Session = Depends(generador_sesion)):
-    print("Api eliminando alumno por id")
-    return repo.del_alumno_por_id(sesion, id)
-
-@app.delete("/alumnos/{id}/calificaciones")
-def eliminar_calificaciones_por_idAlumno(id: int, sesion: Session = Depends(generador_sesion)):
-    print("Api eliminando calificaciones del alumno por id")
-    return repo.del_calificacion_por_idAlumno(sesion, id)
-
-@app.delete("/alumnos/{id}/fotos")
-def eliminar_fotos_por_idAlumno(id: int, sesion: Session = Depends(generador_sesion)):
-    print("Api eliminando fotos del alumno por id")
-    return repo.del_foto_por_idAlumno(sesion, id)
-
-
-### Fotos ###         
 @app.get("/fotos/{id}")
-def foto_por_id(id: int, sesion: Session = Depends(generador_sesion)):
+def foto_por_id(id:int, sesion:Session=Depends(generador_sesion)):
     print("Api consultando foto por id")
     return repo.foto_por_id(sesion, id)
 
-@app.delete("/fotos/{id}")
-def eliminar_foto_por_idAlumno(id: int, sesion: Session = Depends(generador_sesion)):
-    print("Api eliminando foto por id")
-    return repo.del_foto_por_id(sesion, id)
-
-### Calificaciones ###
 @app.get("/calificaciones/{id}")
-def calificacion_por_id(id: int, sesion: Session = Depends(generador_sesion)):
-    print("Api consultando calificación por id")
+def calificacion_por_id(id:int, sesion:Session=Depends(generador_sesion)):
+    print("Api consultando calificacion por id")
     return repo.calificacion_por_id(sesion, id)
 
+@app.delete("/fotos/{id}")
+def borra_foto_por_id(id:int, sesion:Session=Depends(generador_sesion)):
+    print("Api borrando foto por id")
+    repo.borra_foto_por_id(sesion, id)
+    return{"Foto_borrada":"OK"}
+
 @app.delete("/calificaciones/{id}")
-def eliminar_calificacion(id: int, sesion: Session = Depends(generador_sesion)):
-    print("Api eliminando calificación por id")
-    return repo.del_calificacion_por_id(sesion, id)
+def borra_calificacion_por_id(id:int, sesion:Session=Depends(generador_sesion)):
+    print("Api borrando calificacion por id")
+    repo.borra_calificacion_por_id(sesion, id)
+    return{"Calificacion_borrada":"OK"}
+
+@app.delete("/alumnos/{id}/calificaciones")
+def borra_calificacion_por_id_alumno(id:int, sesion:Session=Depends(generador_sesion)):
+    print("Api borrando calificacion por id alumno")
+    repo.borra_calificacion_por_idAlumno(sesion, id)
+    return{"Calificacion_borrada":"OK"}
+
+@app.delete("/alumnos/{id}/fotos")
+def borra_foto_por_id_alumno(id:int, sesion:Session=Depends(generador_sesion)):
+    print("Api borrando foto por id alumno")
+    repo.borra_foto_por_idAlumno(sesion, id)
+    return{"Foto_borrada":"OK"}
+
+@app.delete("/alumnos/{id}")
+def borra_alumno_por_id(id:int, sesion:Session=Depends(generador_sesion)):
+    print("Api borrando alumno por id")
+    repo.borra_calificacion_por_idAlumno(sesion, id)
+    repo.borra_foto_por_idAlumno(sesion, id)
+    repo.borra_alumno_por_id(sesion, id)
+    return{"Alumno_borrado":"OK"}
